@@ -39,9 +39,9 @@ class RechercheController extends AbstractController
     #[Route('/afficheRechercheParMotCle', name: 'afficheRechercheParMotCle')]
     public function afficheRechercheParMotCleAction(Request $request): Response
     {
-		//$query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a "
-		//										  ." where a.titre like :motCle");
-		//$query->setParameter("motCle", "%".$request->query->get("motCle")."%") ;
+		$query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a "
+												  ." where a.titre like :motCle");
+		$query->setParameter("motCle", "%".$request->query->get("motCle")."%") ;
 		$query = $this->entityManager->createQuery("SELECT a FROM App\Entity\Catalogue\Article a "
 												  ." where a.titre like '%".addslashes($request->query->get("motCle"))."%'");
 		$articles = $query->getResult();

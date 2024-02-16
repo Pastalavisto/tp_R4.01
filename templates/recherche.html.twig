@@ -23,6 +23,10 @@
 							</ul>
 						</div>
 					</nav>
+					<form action="{{ path('afficheRechercheParMotCle') }}" method="get">
+						<input type="text" name="motCle" id="motCle" />
+						<button type="submit">Rechercher</button>
+					</form>
 				</header>
 				<div id="content" class="site-content" tabindex="-1">
 					<div class="col-full">
