@@ -139,6 +139,7 @@ class AppFixtures extends Fixture
 			$entityLivre->setPrix("8.90");
 			$entityLivre->setDisponibilite(1);
 			$entityLivre->setImage("/images/719FffADQAL._SL140_.jpg");
+
 			$manager->persist($entityLivre);
 			$manager->flush();
 		}
