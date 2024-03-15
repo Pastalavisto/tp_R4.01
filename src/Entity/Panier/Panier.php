@@ -4,12 +4,47 @@ namespace App\Entity\Panier;
 
 use ArrayObject;
 use App\Entity\Catalogue\Article;
+use App\Entity\Compte\Compte;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
 class Panier
 {
+	#[ORM\Id]
+	#[ORM\GeneratedValue(strategy: "AUTO")]
+	#[ORM\Column(name: "id")]
+	private ?int $id = null;
+
     private float $total;
 
     private ArrayObject $lignesPanier;
+
+	#[ORM\OneToOne(targetEntity: Compte::class, inversedBy: "panier", cascade: ["persist", "remove"])]
+	private ?Compte $compte = null;
+
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
+
+	public function setId(int $id): static
+	{
+		$this->id = $id;
+
+		return $this;
+	}
+
+	public function getCompte(): ?Compte
+	{
+		return $this->compte;
+	}
+
+	public function setCompte(Compte $compte): static
+	{
+		$this->compte = $compte;
+
+		return $this;
+	}
 
 	public function __construct()
     {

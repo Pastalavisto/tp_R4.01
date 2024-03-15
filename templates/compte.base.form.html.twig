@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	<header id="header" class="col-full">
+		<div id="logo">
+			<h1 class="site-title">{{titre}}</h1>
+		</div>
+	</header>
+	<div id="content" class="col-full">
+		<button onclick="window.location.href='connexion'">Connexion</button>
+		<button onclick="window.location.href='inscription'">Inscription</button>
+		{{ form(form) }}
+	</div>
+	{% endblock %}

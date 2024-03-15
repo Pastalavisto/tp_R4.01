@@ -2158,3 +2158,19 @@ button.menu-toggle:after {
   padding:0
  }
 }
+
+#logo {
+    display: flex;
+    justify-content: space-between;
+}
+
+.connexion {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+.connexion > a {
+    font-size: large;
+}
+
