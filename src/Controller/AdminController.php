@@ -302,5 +302,55 @@ class AdminController extends AbstractController
 			return $this->redirectToRoute("adminInstruments") ;
 		}
     }
+
+	#[Route('/admin/database', name: 'adminDatabase')]
+    public function adminDatabase(Request $request): Response
+    {
+		$connection = $this->entityManager->getConnection();
+		$sm = $connection->createSchemaManager();
+		$tables = $sm->listTables();
+
+		foreach ($tables as $table) {
+			echo "<h2>".$table->getName() . " columns:</h2><br>";
+			foreach ($table->getColumns() as $column) {
+				echo ' - ' . $column->getName() . "<br>";
+			}
+			echo "<br>";
+		}
+		return new Response();
+	}
+
+	#[Route('/admin/database/data', name: 'adminDatabaseData')]
+	public function adminDatabaseData(Request $request): Response
+	{
+		echo "<h2>Compte data:</h2>";
+		$comptes = $this->entityManager->getRepository("App\Entity\Compte\Compte")->findAll();
+		foreach ($comptes as $compte) {
+			echo " - " . $compte->getId() . " " . $compte->getNom() . " " . $compte->getEmail() . "<br>";
+			echo "<h4>Panier data:</h4>";
+			$panier = $compte->getPanier();
+			var_dump($panier);
+			
+		}
+		echo "<br>";
+
+		
+		echo "<br>";
+		return new Response();
+	}
+
+
+	#[Route('/admin/database/reset', name: 'adminDatabaseReset')]
+	public function adminDatabaseReset(Request $request): Response
+	{
+		$connection = $this->entityManager->getConnection();
+		$sm = $connection->createSchemaManager();
+		$tables = $sm->listTables();
+
+		foreach ($tables as $table) {
+			$connection->executeStatement("DELETE FROM ".$table->getName());
+		}
+		return new Response();
+	}
 }
 

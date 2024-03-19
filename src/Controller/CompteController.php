@@ -37,7 +37,7 @@ class CompteController extends AbstractController
         $session = $request->getSession() ;
         if (!$session->isStarted())
             $session->start() ;
-        if ($session->has("compte")){
+        if ($session->has("idCompte")){
             return $this->redirectToRoute("compte") ;
         }
 
@@ -52,17 +52,17 @@ class CompteController extends AbstractController
 		$form->handleRequest($request) ;
 
 		$repository = $this->entityManager->getRepository(Compte::class);
-
+		var_dump($request->headers->get('referer')) ;
 		if ($form->isSubmitted()) {
 			if ($form->isValid()) {
 				$entity = $form->getData() ;
 				$compte = $repository->findOneBy(["email" => $entity->getEmail(), "motDePasse" => $entity->getMotDePasse()]) ;
 				if ($compte != null){
-					$session->set("compte", $compte) ;
-					return $this->redirectToRoute("compte") ;
+					$session->set("idCompte", $compte->getId()) ;
+					return $this->redirect($request->headers->get('referer')) ;
 				}
 				else {
-					return $this->redirectToRoute("creerCompte") ;
+					return $this->redirectToRoute("inscription") ;
 				}
 			}
 		}
@@ -79,7 +79,7 @@ class CompteController extends AbstractController
 		$session = $request->getSession() ;
         if (!$session->isStarted())
             $session->start() ;
-        if ($session->has("compte")){
+        if ($session->has("idCompte")){
             return $this->redirectToRoute("compte") ;
         }
 
@@ -98,11 +98,13 @@ class CompteController extends AbstractController
 		if ($form->isSubmitted()) {
 			$entity = $form->getData() ;
 			$entity->setId(hexdec(uniqid()));
-            $panier = new Panier() ;
-            $entity->setPanier($panier) ;
+			$panier = new Panier() ;
+			$entity->setPanier($panier) ;
+			$panier->setCompte($entity) ;
+			$this->entityManager->persist($panier);
 			$this->entityManager->persist($entity);
 			$this->entityManager->flush();
-            $session->set("compte", $entity) ;
+            $session->set("idCompte", $entity->getId()) ;
 			return $this->redirectToRoute("compte") ;
 		}
 		else {
@@ -118,9 +120,10 @@ class CompteController extends AbstractController
 		$session = $request->getSession() ;
 		if (!$session->isStarted())
 			$session->start() ;
-		if ($session->has("compte")){
+		if ($session->has("idCompte")){
+			$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]) ;
 			return $this->render('compte.html.twig', [
-				'compte' => $session->get("compte"),
+				'compte' => $compte,
 			]);
 		}
 		else {
@@ -133,8 +136,8 @@ class CompteController extends AbstractController
 		$session = $request->getSession() ;
 		if (!$session->isStarted())
 			$session->start() ;
-		if ($session->has("compte")){
-			$session->remove("compte") ;
+		if ($session->has("idCompte")){
+			$session->remove("idCompte") ;
 		}
 		return $this->redirectToRoute("connexion") ;
 	}

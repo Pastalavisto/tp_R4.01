@@ -44,28 +44,28 @@
 											</tr>
 										</thead>
 										<tbody>
-										{% for lignePanier in panier.lignesPanier %}
+										{% for lignePanier in panier.getLignesPanier() %}
 											<tr class="woocommerce-cart-form__cart-item cart_item">
 												<td class="product-remove"><a class="remove"
 													title="Remove this item"
-													href="/supprimerLigne?id={{ lignePanier.article.id }}">×</a>
+													href="/supprimerLigne?id={{ lignePanier.getArticle().getId() }}">×</a>
 												</td>
 												<td class="product-thumbnail"><img
 													class="attachment-shop_thumbnail wp-post-image" width="145"
 													height="145" alt="hoodie_4_front"
-													src="{{ lignePanier.article.image }}"></td>
-												<td class="product-name">{{ lignePanier.article.titre }}</td>
-												<td class="product-price"><span class="amount">{{ lignePanier.prixUnitaire }}€</span></td>
+													src="{{ lignePanier.getArticle().getImage() }}"></td>
+												<td class="product-name">{{ lignePanier.getArticle().getTitre() }}</td>
+												<td class="product-price"><span class="amount">{{ lignePanier.getPrixUnitaire() }}€</span></td>
 												<td class="product-quantity">
 													<div class="quantity">{% set random = random() %}
 														<label class="screen-reader-text" for="quantity_{{ random }}">Quantity</label>
 														<input id="quantity_{{ random }}" class="input-text qty text" type="number"
-															 size="4" title="Qty" value="{{ lignePanier.quantite }}"
-															name="cart[{{ lignePanier.article.id }}][qty]"
+															 size="4" title="Qty" value="{{ lignePanier.getQuantite() }}"
+															name="cart[{{ lignePanier.getArticle().getId() }}][qty]"
 															min="1" step="1">
 													</div>
 												</td>
-												<td class="product-subtotal"><span class="amount">{{ lignePanier.prixTotal }}€</span></td>
+												<td class="product-subtotal"><span class="amount">{{ lignePanier.getPrixTotal() }}€</span></td>
 											</tr>
 											{% endfor %}
 											<tr>
@@ -83,7 +83,7 @@
 											<tbody>
 												<tr class="cart-subtotal">
 													<th>Sous-total</th>
-													<td><span class="amount">{{ panier.total }}€</span></td>
+													<td><span class="amount">{{ panier.getTotal() }}€</span></td>
 												</tr>
 												<tr class="shipping">
 													<th>Frais de port</th>
@@ -91,7 +91,7 @@
 												</tr>
 												<tr class="order-total">
 													<th>Total</th>
-													<td><strong> <span class="amount">{{ panier.total }}€</span>
+													<td><strong> <span class="amount">{{ panier.getTotal() }}€</span>
 													</strong></td>
 												</tr>
 											</tbody>

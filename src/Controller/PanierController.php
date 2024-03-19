@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Psr\Log\LoggerInterface;
 
+use App\Entity\Compte\Compte;
 use App\Entity\Catalogue\Article;
 use App\Entity\Panier\Panier;
 use App\Entity\Panier\LignePanier;
@@ -20,8 +21,6 @@ class PanierController extends AbstractController
 {
 	private EntityManagerInterface $entityManager;
 	private LoggerInterface $logger;
-	
-	private Panier $panier;
 	
 	public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)  {
 		$this->entityManager = $entityManager;
@@ -34,15 +33,15 @@ class PanierController extends AbstractController
 		$session = $request->getSession() ;
 		if (!$session->isStarted())
 			$session->start() ;	
-		if ($session->has("panier"))
-			$this->panier = $session->get("panier") ;
-		else
-			$this->panier = new Panier() ;
-		$article = $this->entityManager->getReference("App\Entity\Catalogue\Article", $request->query->get("id"));
-		$this->panier->ajouterLigne($article) ;
-		$session->set("panier", $this->panier) ;
+		if (!$session->has("idCompte"))
+			return $this->redirectToRoute("connexion") ;
+		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$article = $this->entityManager->getRepository(Article::class)->findOneBy(["id" => $request->query->get("id")]);
+		$panier = $compte->getPanier() ;
+		$panier->ajouterLigne($article) ;
+		$this->entityManager->flush();
 		return $this->render('panier.html.twig', [
-            'panier' => $this->panier,
+            'panier' => $panier,
         ]);
     }
 	
@@ -52,17 +51,17 @@ class PanierController extends AbstractController
 		$session = $request->getSession() ;
 		if (!$session->isStarted())
 			$session->start() ;	
-		if ($session->has("panier"))
-			$this->panier = $session->get("panier") ;
-		else
-			$this->panier = new Panier() ;
-		$this->panier->supprimerLigne($request->query->get("id")) ;
-		$session->set("panier", $this->panier) ;
-		if (sizeof($this->panier->getLignesPanier()) === 0)
+		if (!$session->has("idCompte"))
+			return $this->redirectToRoute("connexion") ;
+		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$panier = $compte->getPanier() ;
+		$panier->supprimerLigne($request->query->get("id")) ;
+		$this->entityManager->flush();
+		if (sizeof($panier->getLignesPanier()) === 0)
 			return $this->render('panier.vide.html.twig');
 		else
 			return $this->render('panier.html.twig', [
-				'panier' => $this->panier,
+				'panier' => $panier,
 			]);
     }
 	
@@ -70,25 +69,22 @@ class PanierController extends AbstractController
     public function recalculerPanierAction(Request $request): Response
     {
 		$session = $request->getSession() ;
-		if (!$session->isStarted())
-			$session->start() ;	
-		if ($session->has("panier"))
-			$this->panier = $session->get("panier") ;
-		else
-			$this->panier = new Panier() ;
-		$it = $this->panier->getLignesPanier()->getIterator();
+		if (!$session->has("idCompte"))
+			return $this->redirectToRoute("connexion") ;
+		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$panier = $compte->getPanier() ;
+		$it = $panier->getLignesPanier()->getIterator();
 		while ($it->valid()) {
 			$ligne = $it->current();
 			$article = $ligne->getArticle() ;
-			// cart[1141555897821]["qty"]=4   https://symfony.com/doc/6.4/components/http_foundation.html
 			$ligne->setQuantite($request->request->all("cart")[$article->getId()]["qty"]);
 			$ligne->recalculer() ;
 			$it->next();
 		}
-		$this->panier->recalculer() ;
-		$session->set("panier", $this->panier) ;
+		$panier->recalculer() ;
+		$this->entityManager->flush();
 		return $this->render('panier.html.twig', [
-            'panier' => $this->panier,
+            'panier' => $panier,
         ]);
     }
 	 
@@ -96,17 +92,19 @@ class PanierController extends AbstractController
     public function accederAuPanierAction(Request $request): Response
     {
 		$session = $request->getSession() ;
-		if (!$session->isStarted())
-			$session->start() ;	
-		if ($session->has("panier"))
-			$this->panier = $session->get("panier") ;
-		else
-			$this->panier = new Panier() ;
-		if (sizeof($this->panier->getLignesPanier()) === 0)
+		if (!$session->has("idCompte"))
+			return $this->redirectToRoute("connexion") ;
+		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		if (!$compte->getPanier()){
+			$panier = $this->entityManager->getRepository(Panier::class)->findOneBy(["compte" => $compte]);
+			$session->get("compte")->setPanier($panier) ;
+		}
+		$panier = $compte->getPanier() ;
+		if (sizeof($panier->getLignesPanier()) === 0)
 			return $this->render('panier.vide.html.twig');
 		else
 			return $this->render('panier.html.twig', [
-				'panier' => $this->panier,
+				'panier' => $panier,
 			]);
     }
 	

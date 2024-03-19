@@ -6,6 +6,8 @@ use ArrayObject;
 use App\Entity\Catalogue\Article;
 use App\Entity\Compte\Compte;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 
 #[ORM\Entity]
 class Panier
@@ -17,7 +19,8 @@ class Panier
 
     private float $total;
 
-    private ArrayObject $lignesPanier;
+	#[ORM\OneToMany(targetEntity: LignePanier::class, mappedBy: "panier", cascade: ["persist", "remove"])]
+    private Collection $lignesPanier;
 
 	#[ORM\OneToOne(targetEntity: Compte::class, inversedBy: "panier", cascade: ["persist", "remove"])]
 	private ?Compte $compte = null;
@@ -48,7 +51,7 @@ class Panier
 
 	public function __construct()
     {
-		$this->lignesPanier = new ArrayObject();
+		$this->lignesPanier = new ArrayCollection();
     }
 
 	public function setTotal(): void
@@ -62,7 +65,7 @@ class Panier
 		return $this->total;
     }
 	
-	public function getLignesPanier(): ?ArrayObject
+	public function getLignesPanier(): ?Collection
 	{
 		return $this->lignesPanier;
 	}
@@ -86,7 +89,8 @@ class Panier
 			$lp = new LignePanier() ;
 			$lp->setArticle($article) ; 
 			$lp->setQuantite(1) ;
-			$this->lignesPanier->append($lp) ;
+			$lp->setPanier($this) ;
+			$this->lignesPanier->add($lp) ;
 		}
 		else {
 			$lp->setQuantite($lp->getQuantite() + 1) ;

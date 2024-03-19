@@ -7,7 +7,7 @@
 		<div id="logo">
 			<h1 class="site-title">Site web marchand</h1>
 			<div class="page_item page-item-1 current_page_item focus connexion">
-				<a href="/connexion">Connexion</a>
+				<a href="/connexion">{{ app.session.get("compte")?"Compte":"Connexion" }}</a>
 			</div>
 		</div>
 		<nav id="site-navigation" class="main-navigation" role="navigation">
