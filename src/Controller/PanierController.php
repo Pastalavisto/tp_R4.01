@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Psr\Log\LoggerInterface;
 
-use App\Entity\Compte\Compte;
+use App\Entity\Compte;
 use App\Entity\Catalogue\Article;
 use App\Entity\Panier\Panier;
 use App\Entity\Panier\LignePanier;
