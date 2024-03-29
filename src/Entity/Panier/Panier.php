@@ -4,7 +4,7 @@ namespace App\Entity\Panier;
 
 use ArrayObject;
 use App\Entity\Catalogue\Article;
-use App\Entity\Compte\Compte;
+use App\Entity\Compte;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;

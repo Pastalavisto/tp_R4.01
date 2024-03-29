@@ -3,36 +3,13 @@
 	<link rel="stylesheet" id="jplayer-css" href="/js/jplayer-2.9.2/skin/blue.monday/css/jplayer.blue.monday.css" type="text/css"/>
 {% endblock %}
 {% block body %}
-	<header id="header" class="col-full">
-		<div id="logo">
-			<h1 class="site-title">Site web marchand</h1>
-			<div class="page_item page-item-1 current_page_item focus connexion">
-				<a href="/connexion">{{ app.session.get("compte")?"Compte":"Connexion" }}</a>
-			</div>
-		</div>
-		<nav id="site-navigation" class="main-navigation" role="navigation">
-			<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-				<span>Menu</span>
-			</button>
-			<div class="menu">
-				<ul class="nav-menu">
-					<li class="page_item page-item-1 current_page_item focus">
-						<a href="/afficheRecherche">Rechercher un article</a>
-					</li>
-					<li class="page_item page-item-2">
-						<a href="/accederAuPanier">Panier</a>
-					</li>
-				</ul>
-			</div>
-		</nav>
-		<form action="{{ path('afficheRechercheParMotCle') }}" method="get">
-			<input type="text" name="motCle" id="motCle"/>
-			<button type="submit">Rechercher</button>
-		</form>
-	</header>
 	<div id="content" class="site-content" tabindex="-1">
 		<div class="col-full">
 			<div id="primary">
+				<form action="{{ path('afficheRechercheParMotCle') }}" method="get">
+					<input type="text" name="motCle" id="motCle"/>
+					<button type="submit">Rechercher</button>
+				</form>
 				<main id="main" class="site-main" role="main">
 					<header class="woocommerce-products-header">
 						<h1 class="woocommerce-products-header__title page-title">Résultats de la recherche</h1>
@@ -60,7 +37,7 @@
 
 										</a>
 										<a href="/ajouterLigne?id={{ article.id }}" class="button product_type_simple add_to_cart_button">Mettre
-																						dans le panier</a>
+																																												dans le panier</a>
 										{% if article.pistes is defined %}
 											{% if article.pistes|length > 0 %}
 												<div id="jquery_jplayer_{{ article.id }}" class="jp-jplayer" data-idarticle="{{ article.id }}" data-pistes="{{ article.pistes|json_encode() }}"></div>
@@ -82,9 +59,9 @@
 														<div class="jp-no-solution">
 															<span>Update Required</span>
 															To play the media you will need to
-																												either update your browser to a recent version or update your
+																																																										either update your browser to a recent version or update your
 															<a href="http://get.adobe.com/flashplayer/" target="_blank">Flash
-																														plugin</a>.
+																																																														plugin</a>.
 														</div>
 													</div>
 												</div>

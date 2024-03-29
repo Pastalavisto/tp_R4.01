@@ -324,7 +324,7 @@ class AdminController extends AbstractController
 	public function adminDatabaseData(Request $request): Response
 	{
 		echo "<h2>Compte data:</h2>";
-		$comptes = $this->entityManager->getRepository("App\Entity\Compte\Compte")->findAll();
+		$comptes = $this->entityManager->getRepository("App\Entity\Compte")->findAll();
 		foreach ($comptes as $compte) {
 			echo " - " . $compte->getId() . " " . $compte->getNom() . " " . $compte->getEmail() . "<br>";
 			echo "<h4>Panier data:</h4>";

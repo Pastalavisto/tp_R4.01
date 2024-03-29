@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+	<div id="content" class="col-full">
+
+		<h1>Mon compte</h1>
+		<h2>Vos informations</h2>
+		<h4>Nom :
+			{{ compte.getNom() }}</h4>
+		<h4>Prenom :
+			{{ compte.getPrenom() }}</h4>
+		<h4>Email associé :
+			{{ compte.getEmail() }}</h4>
+		<a href="/deconnexion">Déconnexion</a>
+	</div>
+{% endblock %}

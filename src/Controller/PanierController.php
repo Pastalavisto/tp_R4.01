@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Psr\Log\LoggerInterface;
 
-use App\Entity\Compte\Compte;
+use App\Entity\Compte;
 use App\Entity\Catalogue\Article;
 use App\Entity\Panier\Panier;
 use App\Entity\Panier\LignePanier;
@@ -30,17 +30,14 @@ class PanierController extends AbstractController
     #[Route('/ajouterLigne', name: 'ajouterLigne')]
     public function ajouterLigneAction(Request $request): Response
     {
-		$session = $request->getSession() ;
-		if (!$session->isStarted())
-			$session->start() ;	
-		if (!$session->has("idCompte"))
-			return $this->redirectToRoute("connexion") ;
-		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		
+		$compte = $this->getUser();
 		$article = $this->entityManager->getRepository(Article::class)->findOneBy(["id" => $request->query->get("id")]);
 		$panier = $compte->getPanier() ;
 		$panier->ajouterLigne($article) ;
 		$this->entityManager->flush();
-		return $this->render('panier.html.twig', [
+		return $this->render('panier/panier.html.twig', [
             'panier' => $panier,
         ]);
     }
@@ -48,19 +45,16 @@ class PanierController extends AbstractController
     #[Route('/supprimerLigne', name: 'supprimerLigne')]
     public function supprimerLigneAction(Request $request): Response
     {
-		$session = $request->getSession() ;
-		if (!$session->isStarted())
-			$session->start() ;	
-		if (!$session->has("idCompte"))
-			return $this->redirectToRoute("connexion") ;
-		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		
+		$compte = $this->getUser();
 		$panier = $compte->getPanier() ;
 		$panier->supprimerLigne($request->query->get("id")) ;
 		$this->entityManager->flush();
 		if (sizeof($panier->getLignesPanier()) === 0)
-			return $this->render('panier.vide.html.twig');
+			return $this->render('panier/panier.vide.html.twig');
 		else
-			return $this->render('panier.html.twig', [
+			return $this->render('panier/panier.html.twig', [
 				'panier' => $panier,
 			]);
     }
@@ -68,10 +62,9 @@ class PanierController extends AbstractController
     #[Route('/recalculerPanier', name: 'recalculerPanier', methods: ["GET", "POST"])]
     public function recalculerPanierAction(Request $request): Response
     {
-		$session = $request->getSession() ;
-		if (!$session->has("idCompte"))
-			return $this->redirectToRoute("connexion") ;
-		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		
+		$compte = $this->getUser();
 		$panier = $compte->getPanier() ;
 		$it = $panier->getLignesPanier()->getIterator();
 		while ($it->valid()) {
@@ -83,7 +76,7 @@ class PanierController extends AbstractController
 		}
 		$panier->recalculer() ;
 		$this->entityManager->flush();
-		return $this->render('panier.html.twig', [
+		return $this->render('panier/panier.html.twig', [
             'panier' => $panier,
         ]);
     }
@@ -91,19 +84,24 @@ class PanierController extends AbstractController
     #[Route('/accederAuPanier', name: 'accederAuPanier')]
     public function accederAuPanierAction(Request $request): Response
     {
-		$session = $request->getSession() ;
-		if (!$session->has("idCompte"))
-			return $this->redirectToRoute("connexion") ;
-		$compte = $this->entityManager->getRepository(Compte::class)->findOneBy(["id" => $session->get("idCompte")]);
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		
+		$compte = $this->getUser();
 		if (!$compte->getPanier()){
 			$panier = $this->entityManager->getRepository(Panier::class)->findOneBy(["compte" => $compte]);
-			$session->get("compte")->setPanier($panier) ;
+			if (!$panier){
+				$panier = new Panier() ;
+				$panier->setCompte($compte) ;
+				$this->entityManager->persist($panier);
+				$compte->setPanier($panier) ;
+				$this->entityManager->flush();
+			}
 		}
 		$panier = $compte->getPanier() ;
 		if (sizeof($panier->getLignesPanier()) === 0)
-			return $this->render('panier.vide.html.twig');
+			return $this->render('panier/panier.vide.html.twig');
 		else
-			return $this->render('panier.html.twig', [
+			return $this->render('panier/panier.html.twig', [
 				'panier' => $panier,
 			]);
     }

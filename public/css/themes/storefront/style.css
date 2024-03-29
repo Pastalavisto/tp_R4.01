@@ -1698,10 +1698,9 @@ button.menu-toggle:after {
   display:inline-block
  }
  .col-full {
-  max-width:66.4989378333em;
+  max-width:75%;
   margin-left:auto;
   margin-right:auto;
-  padding:0 2.617924em;
   box-sizing:content-box
  }
  .col-full:after,
@@ -2162,15 +2161,20 @@ button.menu-toggle:after {
 #logo {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
 
-.connexion {
+#logo > h3 {
+    margin: 0;
+}
+.navbar-buttons {
     display: flex;
     justify-content: space-between;
-    margin-top: 10px;
+    align-items: center;
+    width:  auto;
 }
 
-.connexion > a {
-    font-size: large;
+.navbar-buttons a {
+    margin-left: 10px;
 }
 
