@@ -13,9 +13,7 @@
 		<link rel="stylesheet" id="storefront-woocommerce-style-css" href="/css/themes/storefront/assets/css/woocommerce/woocommerce.css" type="text/css"/>
 		<link rel="stylesheet" id="storefront-icons-css" href="/css/themes/storefront/assets/css/base/icons.css" type="text/css"/>
 		<style>
-			id="storefront-style-inline-css"
-			type="text/css"
-			button.menu-toggle,
+			id="storefront-style-inline-css" type="text/css" button.menu-toggle,
 			button.menu-toggle:hover,
 			.handheld-navigation .dropdown-toggle {
 				color: #333333;
@@ -50,15 +48,16 @@
 			<div id="inner-wrapper">
 				<header id="header" class="col-full">
 					<div id="logo">
-						<h1 class="site-title">Site web marchand</h1>
-						<div class="page_item page-item-1 current_page_item focus connexion">
-							<a href="/connexion">{{ is_granted('ROLE_USER')?"Compte":"Connexion" }}</a>
+						<h3 class="site-title">Site web marchand</h3>
+						<div class="navbar-buttons">
+							<a href="/accederAuPanier">Panier</a>
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+								<a href="/compte">Compte</a>
+							{% else %}
+								<a href="/connexion">Connexion</a>
+							{% endif %}
 						</div>
-						{% if is_granted('ROLE_USER') %}
-							<div class="page_item page-item-1 current_page_item focus connexion">
-								<a href="/deconnexion">Déconnexion</a>
-							</div>
-						{% endif %}
+
 					</div>
 					<nav id="site-navigation" class="main-navigation" role="navigation">
 						<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
@@ -69,16 +68,9 @@
 								<li class="page_item page-item-1 current_page_item focus">
 									<a href="/afficheRecherche">Rechercher un article</a>
 								</li>
-								<li class="page_item page-item-2">
-									<a href="/accederAuPanier">Panier</a>
-								</li>
 							</ul>
 						</div>
 					</nav>
-					<form action="{{ path('afficheRechercheParMotCle') }}" method="get">
-						<input type="text" name="motCle" id="motCle"/>
-						<button type="submit">Rechercher</button>
-					</form>
 				</header>
 
 				{% block body %}{% endblock %}

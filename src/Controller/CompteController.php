@@ -37,10 +37,10 @@ class CompteController extends AbstractController
 	{
 		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
 		
-		$user = $this->getUser();
+		$compte = $this->getUser();
 
 		return $this->render('compte/compte.html.twig', [
-			'compte' => $user,
+			'compte' => $compte,
 		]);
 	}
 }

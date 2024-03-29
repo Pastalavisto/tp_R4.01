@@ -12,19 +12,24 @@ use DeezerAPI\Search;
 use App\Entity\Catalogue\Livre;
 use App\Entity\Catalogue\Musique;
 use App\Entity\Catalogue\Piste;
+use App\Entity\Compte;
 
 use Psr\Log\LoggerInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+
 
 class AppFixtures extends Fixture
 {
 	protected $logger;
+	private UserPasswordHasherInterface $hasher;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $logger, UserPasswordHasherInterface $hasher)
     {
         $this->logger = $logger;
+		$this->hasher = $hasher;
     }
 	
-    public function load(ObjectManager $manager): void
+    public function load(ObjectManager $manager) : void
     {
 		if (count($manager->getRepository("App\Entity\Catalogue\Article")->findAll()) == 0) {
 			$ebay = new Ebay($this->logger);
@@ -141,6 +146,15 @@ class AppFixtures extends Fixture
 			$entityLivre->setImage("/images/719FffADQAL._SL140_.jpg");
 
 			$manager->persist($entityLivre);
+
+			//CREATION DU COMPTE ADMIN
+			$compte = new Compte();
+			$compte->setEmail("admin@admin.com");
+			$compte->setRoles(["ROLE_ADMIN"]);
+			$compte->setPassword($this->hasher->hashPassword($compte, "admin"));
+			$compte->setNom("admin");
+			$compte->setPrenom("admin");
+			$manager->persist($compte);
 			$manager->flush();
 		}
     }
