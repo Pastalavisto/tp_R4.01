@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 #[ORM\InheritanceType("SINGLE_TABLE")]
 #[ORM\DiscriminatorColumn(name: "article_type", type: "string")]
-#[ORM\DiscriminatorMap(["article" => "Article", "livre" => "Livre", "musique" => "Musique", "instrument"=>"Instrument"])]
+#[ORM\DiscriminatorMap(["livre" => "Livre", "musique" => "Musique", "instrument" => "Instrument"])]
 class Article
 {
     #[ORM\Id]
@@ -23,7 +23,7 @@ class Article
 
     #[ORM\Column(name: 'disponibilite')]
     private ?int $disponibilite = null;
-	
+
     #[ORM\Column(length: 255, name: 'image')]
     private ?string $image = null;
 
@@ -31,11 +31,10 @@ class Article
     {
         return $this->id;
     }
-	
+
     public function setId(int $id): static
     {
         $this->id = $id;
-
         return $this;
     }
 
@@ -47,7 +46,6 @@ class Article
     public function setTitre(string $titre): static
     {
         $this->titre = $titre;
-
         return $this;
     }
 
@@ -59,7 +57,6 @@ class Article
     public function setPrix(float $prix): static
     {
         $this->prix = $prix;
-
         return $this;
     }
 
@@ -71,7 +68,6 @@ class Article
     public function setDisponibilite(int $disponibilite): static
     {
         $this->disponibilite = $disponibilite;
-
         return $this;
     }
 
@@ -83,8 +79,6 @@ class Article
     public function setImage(string $image): static
     {
         $this->image = $image;
-
         return $this;
     }
 }
-

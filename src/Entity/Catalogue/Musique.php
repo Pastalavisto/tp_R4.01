@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Entity]
 class Musique extends Article
 {
+    private string $articleType = 'livre';
+
     #[ORM\Column(length: 255,name: 'artiste')]
     private ?string $artiste = null;
 

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Livre extends Article
 {
-    #[ORM\Column(length: 255,name: 'auteur')]
+    #[ORM\Column(length: 255, name: 'auteur')]
     private ?string $auteur = null;
 
     #[ORM\Column(length: 255, name: 'isbn')]
@@ -27,7 +27,6 @@ class Livre extends Article
     public function setAuteur(string $auteur): static
     {
         $this->auteur = $auteur;
-
         return $this;
     }
 
@@ -39,7 +38,6 @@ class Livre extends Article
     public function setISBN(string $ISBN): static
     {
         $this->ISBN = $ISBN;
-
         return $this;
     }
 
@@ -51,7 +49,6 @@ class Livre extends Article
     public function setNbPages(int $nbPages): static
     {
         $this->nbPages = $nbPages;
-
         return $this;
     }
 
@@ -63,8 +60,6 @@ class Livre extends Article
     public function setDateDeParution(string $dateDeParution): static
     {
         $this->dateDeParution = $dateDeParution;
-
         return $this;
     }
 }
-

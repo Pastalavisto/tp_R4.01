@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" id="jplayer-css" href="/js/jplayer-2.9.2/skin/blue.monday/css/jplayer.blue.monday.css" type="text/css"/>
+{% endblock %}
+
+{% block body %}
+    <header id="header" class="col-full">
+        <div id="logo">
+            <h1 class="site-title">Site web marchand</h1>
+            <div class="page_item page-item-1 current_page_item focus connexion">
+                <a href="/connexion">Connexion</a>
+            </div>
+        </div>
+        <nav id="site-navigation" class="main-navigation" role="navigation">
+            <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+                <span>Menu</span>
+            </button>
+            <div class="menu">
+                <ul class="nav-menu">
+                    <li class="page_item page-item-1 current_page_item focus">
+                        <a href="/afficheRecherche">Rechercher un article</a>
+                    </li>
+                    <li class="page_item page-item-2">
+                        <a href="/accederAuPanier">Panier</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <form action="{{ path('afficheRechercheParMotCle') }}" method="get">
+            <input type="text" name="motCle" id="motCle"/>
+            <button type="submit">Rechercher</button>
+        </form>
+    </header>
+
+    <div id="content" class="site-content" tabindex="-1">
+        <div class="col-full">
+            <div id="primary">
+                <main id="main" class="site-main" role="main">
+                    <ul class="products">
+                            <div>
+                                <h2>{{ articles.titre }}</h2>
+                                <img src="{{ articles.image }}" alt="{{ articles.titre }}" style="max-width: 200px; max-height: 200px;">
+                                <p>Prix: {{ articles.prix }} €</p>
+                                {% if articles.disponibilite > 0 %}
+                                    <p>Disponible en stock</p>
+                                {% else %}
+                                    <p>Non disponible en stock</p>
+                                {% endif %}
+                                {% if articles.auteur is defined %}
+                                    {% if articles.auteur == null %}
+                                        <p>Auteur: inconnu</p>
+                                    {% else %}
+                                        <p>Auteur: {{ articles.auteur }}</p>
+                                    {% endif %}
+                                    
+                                    {% if articles.isbn == null %}
+                                        <p>ISBN: inconnu</p>
+                                    {% else %}
+                                        <p>ISBN: {{ articles.isbn }}</p>
+                                    {% endif %}
+                                    
+                                    {% if articles.nbPages == null %}
+                                        <p>Nombre de pages: inconnu</p>
+                                    {% else %}
+                                        <p>Nombre de pages: {{ articles.nbPages }}</p>
+                                    {% endif %}
+                                    
+                                    {% if articles.dateDeParution == null %}
+                                        <p>Date de parution: inconnu</p>
+                                    {% else %}
+                                        <p>Date de parution: {{ articles.dateDeParution }}</p>
+                                    {% endif %}
+
+                                {% elseif articles.artiste is defined %}
+                                    {% if articles.artiste == null %}
+                                        <p>Artiste: inconnu</p>
+                                    {% else %}
+                                        <p>Artiste: {{ articles.artiste }}</p>
+                                    {% endif %}
+
+                                    {% if articles.dateDeParution == null %}
+                                        <p>Date de parution: inconnu</p>
+                                    {% else %}
+                                        <p>Date de parution: {{ articles.dateDeParution }}</p>
+                                    {% endif %}
+
+                                {% elseif articles.marque is defined %}
+                                    <p>Marque: {{ articles.marque }}</p>
+                                    {% if articles.marque is null %}
+                                        <p>Marque: inconnu</p>
+                                    {% endif %}
+                                {% endif %}
+                            </div>                            
+                    </ul>
+                </main>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

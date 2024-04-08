@@ -7,6 +7,8 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity]
 class Instrument extends Article
 {
+    private string $articleType = 'livre';
+
     #[ORM\Column(length: 255,name: 'marque')]
     private ?string $marque = null;
 
