@@ -328,12 +328,15 @@ class AdminController extends AbstractController
 			foreach ($columns as $column) {
 				$entities[$i]["columns"] .= $column->getName().", ";
 			}
+			$entities[$i]["columns"] = substr($entities[$i]["columns"], 0, -2);
 			$i++;
 		}
 		return $this->render('admin/admin.database.html.twig', [
 			'entities' => $entities,
 		]);
 	}
+
+
 
 }
 
