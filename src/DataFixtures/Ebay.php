@@ -5,9 +5,9 @@ use Psr\Log\LoggerInterface;
 
 class Ebay{
     //private $uri_finding = "http://svcs.ebay.com/services/search/FindingService/v1";
-	private string $uri_finding = "http://odp.tuxfamily.org/services/search/FindingService/v1";
-	//private $api_endpoint = 'http://api.ebay.com/ws/api.dll' ;
-	private string $api_endpoint = 'http://odp.tuxfamily.org/ws/api.dll' ;
+	private string $uri_finding = "https://la-projets.univ-lemans.fr/mmi/services/search/FindingService/v1";
+	//private $api_endpoint = "http://api.ebay.com/ws/api.dll" ;
+	private string $api_endpoint = "https://la-projets.univ-lemans.fr/mmi/ws/api.dll" ;
 	// https://developer.ebay.com/signin?tab=register
     private string $appid = "";
 	private string $certid = "" ;
@@ -254,7 +254,7 @@ class Ebay{
     private function curl(string $url, string $method = 'GET', array $headers = null, string $postvals = null): ?string
 	{
         $ch = curl_init($url);
-
+		curl_setopt($ch,CURLOPT_SSL_VERIFYPEER, false) ;
         if ($method == 'GET'){
             curl_setopt($ch, CURLOPT_URL, $url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -278,7 +278,7 @@ class Ebay{
 			$erreur = curl_error($ch);
 		}
         curl_close($ch);
-            
+
 		if ($erreur != "") {
 			$this->logger->error($erreur) ;
 			return null;
