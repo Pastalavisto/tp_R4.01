@@ -50,6 +50,9 @@
 					<div id="logo">
 						<h3 class="site-title">Site web marchand</h3>
 						<div class="navbar-buttons">
+							{% if is_granted('ROLE_ADMIN') %}
+								<a href="/compte">Page Admin</a>
+							{% endif %}
 							<a href="/accederAuPanier">Panier</a>
 							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 								<a href="/compte">Compte</a>
