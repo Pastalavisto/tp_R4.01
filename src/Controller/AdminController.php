@@ -41,9 +41,9 @@ class AdminController extends AbstractController
 	public function admin(Request $request): Response
 	{
 		$pages = [];
-		$pages[] = ["name" => "Musiques", "url" => "adminMusiques", "informations" => "Quantité : ".$this->entityManager->getRepository("App\Entity\Catalogue\Musique")->count([])];
-		$pages[] = ["name" => "Livres", "url" => "adminLivres", "informations" => "Quantité : ".$this->entityManager->getRepository("App\Entity\Catalogue\Livre")->count([])];
-		$pages[] = ["name" => "Instruments", "url" => "adminInstruments", "informations" => "Quantité : ".$this->entityManager->getRepository("App\Entity\Catalogue\Instrument")->count([])];
+		$pages[] = ["name" => "Musiques", "url" => "adminMusiques", "informations" => "Quantité : " . $this->entityManager->getRepository("App\Entity\Catalogue\Musique")->count([])];
+		$pages[] = ["name" => "Livres", "url" => "adminLivres", "informations" => "Quantité : " . $this->entityManager->getRepository("App\Entity\Catalogue\Livre")->count([])];
+		$pages[] = ["name" => "Instruments", "url" => "adminInstruments", "informations" => "Quantité : " . $this->entityManager->getRepository("App\Entity\Catalogue\Instrument")->count([])];
 		$pages[] = ["name" => "Database", "url" => "adminDatabase", "informations" => "Afficher les tables de la base de données"];
 		return $this->render('admin/admin.html.twig', [
 			'pages' => $pages,
@@ -314,8 +314,7 @@ class AdminController extends AbstractController
 	#[Route('/admin/database', name: 'adminDatabase')]
 	public function adminDatabase(Request $request): Response
 	{
-		$connection = $this->entityManager->getConnection();
-		$tables = [Instrument::class, Livre::class, Musique::class,Piste::class,Panier::class,Compte::class];
+		$tables = [Instrument::class, Livre::class, Musique::class, Piste::class, Panier::class, Compte::class];
 		$entities = [];
 		$i = 0;
 		foreach ($tables as $table) {
@@ -323,10 +322,10 @@ class AdminController extends AbstractController
 			$entities[$i]["name"] = $table;
 			$entities[$i]["columns"] = "";
 			$entities[$i]["count"] = $this->entityManager->getRepository($table)->count([]);
-			$columns = $connection->getSchemaManager()->listTableColumns($this->entityManager->getClassMetadata($table)->getTableName());
+			$columns = $this->entityManager->getClassMetadata($table)->getFieldNames();
 			$entities[$i]["columns"] = "";
 			foreach ($columns as $column) {
-				$entities[$i]["columns"] .= $column->getName().", ";
+				$entities[$i]["columns"] .= $column . ", ";
 			}
 			$entities[$i]["columns"] = substr($entities[$i]["columns"], 0, -2);
 			$i++;
@@ -336,7 +335,34 @@ class AdminController extends AbstractController
 		]);
 	}
 
-
+	#[Route('/admin/database/{table}', name: 'adminDatabaseTable')]
+	public function adminDatabaseTable(Request $request, $table): Response
+	{
+		$query = $this->entityManager->getRepository($table)->findAll();
+		$columns = $this->entityManager->getClassMetadata($table)->getFieldNames();
+		$entities = [
+			"name" => $table,
+			"fields" => array(),
+			"data" => array()
+		];
+		var_dump($columns);
+		foreach ($columns as $column) {
+			if ($column != "password")
+			array_push($entities["fields"], $column);
+		}
+		foreach ($query as $entity) {
+			$line = array();
+			foreach ($columns as $column) {
+				$line[$column] = $entity->{"get" . ucfirst($column)}();
+				if (is_array($line[$column]))
+					$line[$column] = implode(", ", $line[$column]);
+			}
+			array_push($entities["data"], $line);
+		}
+		return $this->render('admin/admin.database.table.html.twig', [
+			'entities' => $entities,
+		]);
+	}
 
 }
 
