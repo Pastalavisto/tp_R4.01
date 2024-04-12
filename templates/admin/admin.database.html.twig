@@ -1,0 +1,19 @@
+{% extends 'admin/base.admin.html.twig' %}
+{% block body %}
+    <div class="container col-full">
+        <table class="table_admin">
+            <tr>
+                <th>Table</th>
+                <th>Colonnes</th>
+                <th>Nombre d'enregistrements</th>
+            </tr>
+            {% for entity in entities %}
+                <tr>
+                    <td><a href="{{ path('adminDatabaseTable', {table:entity.name}) }}" >{{ entity.name }}</a></td>
+                    <td>{{ entity.columns }}</td>
+                    <td>{{ entity.count }}</td>
+                </tr>
+            {% endfor %}
+        </table
+    </div>
+{% endblock %}
