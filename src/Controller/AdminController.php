@@ -345,7 +345,6 @@ class AdminController extends AbstractController
 			"fields" => array(),
 			"data" => array()
 		];
-		var_dump($columns);
 		foreach ($columns as $column) {
 			if ($column != "password")
 			array_push($entities["fields"], $column);
