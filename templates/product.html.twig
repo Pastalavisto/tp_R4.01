@@ -1,8 +1,4 @@
 {% extends 'base.html.twig' %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" id="jplayer-css" href="/js/jplayer-2.9.2/skin/blue.monday/css/jplayer.blue.monday.css" type="text/css"/>
-{% endblock %}
 {% block navigation %}
 	<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
 		<span>Menu</span>
@@ -16,97 +12,68 @@
 	</div>
 {% endblock %}
 {% block body %}
-    <header id="header" class="col-full">
-        <div id="logo">
-            <h1 class="site-title">Site web marchand</h1>
-            <div class="page_item page-item-1 current_page_item focus connexion">
-                <a href="/connexion">Connexion</a>
-            </div>
-        </div>
-        <nav id="site-navigation" class="main-navigation" role="navigation">
-            <button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-                <span>Menu</span>
-            </button>
-            <div class="menu">
-                <ul class="nav-menu">
-                    <li class="page_item page-item-1 current_page_item focus">
-                        <a href="/afficheRecherche">Rechercher un article</a>
-                    </li>
-                    <li class="page_item page-item-2">
-                        <a href="/accederAuPanier">Panier</a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <form action="{{ path('afficheRechercheParMotCle') }}" method="get">
-            <input type="text" name="motCle" id="motCle"/>
-            <button type="submit">Rechercher</button>
-        </form>
-    </header>
+	<div class="container col-full">
+		<h2>{{ article.titre }}</h2>
+		<img src="{{ article.image }}" alt="{{ article.titre }}" style="max-width: 200px; max-height: 200px;">
+		<p>Prix:
+			{{ article.prix }}
+			€</p>
+		{% if article.disponibilite > 0 %}
+			<p>Disponible en stock</p>
+		{% else %}
+			<p>Non disponible en stock</p>
+		{% endif %}
+		{% if article.auteur is defined %}
+			{% if article.auteur == null %}
+				<p>Auteur: inconnu</p>
+			{% else %}
+				<p>Auteur:
+					{{ article.auteur }}</p>
+			{% endif %}
 
-    <div id="content" class="site-content" tabindex="-1">
-        <div class="col-full">
-            <div id="primary">
-                <main id="main" class="site-main" role="main">
-                    <ul class="products">
-                            <div>
-                                <h2>{{ articles.titre }}</h2>
-                                <img src="{{ articles.image }}" alt="{{ articles.titre }}" style="max-width: 200px; max-height: 200px;">
-                                <p>Prix: {{ articles.prix }} €</p>
-                                {% if articles.disponibilite > 0 %}
-                                    <p>Disponible en stock</p>
-                                {% else %}
-                                    <p>Non disponible en stock</p>
-                                {% endif %}
-                                {% if articles.auteur is defined %}
-                                    {% if articles.auteur == null %}
-                                        <p>Auteur: inconnu</p>
-                                    {% else %}
-                                        <p>Auteur: {{ articles.auteur }}</p>
-                                    {% endif %}
-                                    
-                                    {% if articles.isbn == null %}
-                                        <p>ISBN: inconnu</p>
-                                    {% else %}
-                                        <p>ISBN: {{ articles.isbn }}</p>
-                                    {% endif %}
-                                    
-                                    {% if articles.nbPages == null %}
-                                        <p>Nombre de pages: inconnu</p>
-                                    {% else %}
-                                        <p>Nombre de pages: {{ articles.nbPages }}</p>
-                                    {% endif %}
-                                    
-                                    {% if articles.dateDeParution == null %}
-                                        <p>Date de parution: inconnu</p>
-                                    {% else %}
-                                        <p>Date de parution: {{ articles.dateDeParution }}</p>
-                                    {% endif %}
+			{% if article.isbn == null %}
+				<p>ISBN: inconnu</p>
+			{% else %}
+				<p>ISBN:
+					{{ article.isbn }}</p>
+			{% endif %}
 
-                                {% elseif articles.artiste is defined %}
-                                    {% if articles.artiste == null %}
-                                        <p>Artiste: inconnu</p>
-                                    {% else %}
-                                        <p>Artiste: {{ articles.artiste }}</p>
-                                    {% endif %}
+			{% if article.nbPages == null %}
+				<p>Nombre de pages: inconnu</p>
+			{% else %}
+				<p>Nombre de pages:
+					{{ article.nbPages }}</p>
+			{% endif %}
 
-                                    {% if articles.dateDeParution == null %}
-                                        <p>Date de parution: inconnu</p>
-                                    {% else %}
-                                        <p>Date de parution: {{ articles.dateDeParution }}</p>
-                                    {% endif %}
+			{% if article.dateDeParution == null %}
+				<p>Date de parution: inconnu</p>
+			{% else %}
+				<p>Date de parution:
+					{{ article.dateDeParution }}</p>
+			{% endif %}
 
-                                {% elseif articles.marque is defined %}
-                                    <p>Marque: {{ articles.marque }}</p>
-                                    {% if articles.marque is null %}
-                                        <p>Marque: inconnu</p>
-                                    {% endif %}
-                                {% endif %}
-                            </div>                            
-                    </ul>
-                </main>
-            </div>
-        </div>
-    </div>
+		{% elseif article.artiste is defined %}
+			{% if article.artiste == null %}
+				<p>Artiste: inconnu</p>
+			{% else %}
+				<p>Artiste:
+					{{ article.artiste }}</p>
+			{% endif %}
 
+			{% if article.dateDeParution == null %}
+				<p>Date de parution: inconnu</p>
+			{% else %}
+				<p>Date de parution:
+					{{ article.dateDeParution }}</p>
+			{% endif %}
+
+		{% elseif article.marque is defined %}
+			<p>Marque:
+				{{ article.marque }}</p>
+			{% if article.marque is null %}
+				<p>Marque: inconnu</p>
+			{% endif %}
+		{% endif %}
+        <a href="/ajouterLigne?id={{ article.id }}" class="button product_type_simple add_to_cart_button">Mettre dans le panier</a>
+	</div>
 {% endblock %}

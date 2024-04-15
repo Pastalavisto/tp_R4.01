@@ -8,7 +8,24 @@
 		{{ form_row(commandeForm.codePostal) }}
 		{{ form_row(commandeForm.pays) }}
 		{{ form_row(commandeForm.adresse) }}
-		<h3>Récapitulatif de la commande : </h3>
+		<div>
+			<label class="required" for="cardName">Titulaire de la carte :</label>
+			<input type="text" name="cardName" required>
+		</div>
+		<div>
+			<label class="required" for="cardNumber">Numéro de carte :</label>
+			<input name="cardNumber" type="numeric" maxlength="16" placeholder="xxxxxxxxxxxxxxxx" required>
+		</div>
+		<div>
+			<label class="required" for="date">Date d'expiration :</label>
+			<input type="month" name="date" required>
+		</div>
+		<div>
+			<label class="required" for="cvv">CVV :</label>
+			<input type="numeric" name="cvv" maxlength="3" required>
+		</div>
+		<h3>Récapitulatif de la commande :
+		</h3>
 		<div class="table">
 			<table>
 				<tr>

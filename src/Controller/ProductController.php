@@ -30,28 +30,15 @@ class ProductController extends AbstractController
 		$this->logger = $logger;
 	}
 
-    #[Route('/produit', name: 'produit')]
+    #[Route('/produit/{id}', name: 'produit')]
     public function produit(Request $request, LoggerInterface $logger): Response
     {
-		$articles = $this->entityManager->getReference("App\Entity\Catalogue\Article", $request->query->get("id"));
-		
+		$article = $this->entityManager->getReference("App\Entity\Catalogue\Article", $request->get("id"));
+		if (!$article) {
+			throw $this->createNotFoundException("L'article n'existe pas");
+		}
 		return $this->render('product.html.twig', [
-            'articles' => $articles,
+            'article' => $article,
         ]);
     }
-
-	public function livreDetailAction($id)
-{
-    $livre = $this->getDoctrine()
-        ->getRepository(Livre::class)
-        ->find($id);
-
-    if (!$livre) {
-        throw $this->createNotFoundException(
-            'Aucun livre trouvé pour l\'id '.$id
-        );
-    }
-
-    return $this->render('livre/detail.html.twig', ['livre' => $livre]);
-}
 }

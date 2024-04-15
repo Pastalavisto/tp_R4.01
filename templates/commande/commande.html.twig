@@ -38,7 +38,7 @@
 					<th>Prix total</th>
 				</tr>
 				{% for lignePanier in commande.getLignesPanier() %}
-					<tr>
+					<tr onclick="window.location.href = '/produit/{{ lignePanier.getArticle().getId() }}'">
 						<td>{{ lignePanier.getArticle().getTitre() }}</td>
 						<td>{{ lignePanier.getQuantite() }}</td>
 						<td>{{ lignePanier.getPrixUnitaire() }}

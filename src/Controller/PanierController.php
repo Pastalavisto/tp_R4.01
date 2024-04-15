@@ -122,15 +122,16 @@ class PanierController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $commande->setCompte($compte);
-			$commande->setLignesPanier($panier->getLignesPanier());
+			$lignesPanier = $panier->getLignesPanier();
+			$commande->setLignesPanier($lignesPanier);
 			$commande->setAdresse($form->get('adresse')->getData());
 			$commande->setPays($form->get('pays')->getData());
 			$commande->setVille($form->get('ville')->getData());
 			$commande->setCodePostal($form->get('codePostal')->getData());
 			$commande->setTotal($panier->getTotal());
 			$commande->setDate(new \DateTime());
-			$this->entityManager->persist($commande);
 			$panier->vider();
+			$this->entityManager->persist($commande);
 			$this->entityManager->flush();
             
 
