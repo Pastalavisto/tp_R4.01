@@ -1,4 +1,16 @@
 {% extends 'base.html.twig' %}
+{% block navigation %}
+	<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+		<span>Menu</span>
+	</button>
+	<div class="menu">
+		<ul class="nav-menu">
+			<li class="page_item page-item-1 current_page_item focus">
+				<a href="/afficheRecherche">Rechercher un article</a>
+			</li>
+		</ul>
+	</div>
+{% endblock %}
 {% block body %}
 				<div id="content" class="col-full">
 					<div id="main-sidebar-container">

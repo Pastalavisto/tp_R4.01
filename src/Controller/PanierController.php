@@ -10,10 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 
 use Psr\Log\LoggerInterface;
 
+use App\Form\CommandeFormType;
+
 use App\Entity\Compte;
 use App\Entity\Catalogue\Article;
 use App\Entity\Panier\Panier;
 use App\Entity\Panier\LignePanier;
+use App\Entity\Commande;
 
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -109,6 +112,34 @@ class PanierController extends AbstractController
     #[Route('/commanderPanier', name: 'commanderPanier')]
     public function commanderPanierAction(Request $request): Response
     {
-		return $this->render('commande.html.twig');
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+
+		$compte = $this->getUser();
+		$panier = $compte->getPanier() ;
+		$commande = new Commande();
+        $form = $this->createForm(CommandeFormType::class, $commande);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $commande->setCompte($compte);
+			$commande->setLignesPanier($panier->getLignesPanier());
+			$commande->setAdresse($form->get('adresse')->getData());
+			$commande->setPays($form->get('pays')->getData());
+			$commande->setVille($form->get('ville')->getData());
+			$commande->setCodePostal($form->get('codePostal')->getData());
+			$commande->setTotal($panier->getTotal());
+			$commande->setDate(new \DateTime());
+			$this->entityManager->persist($commande);
+			$panier->vider();
+			$this->entityManager->flush();
+            
+
+            return $this->redirectToRoute('commande', ['id' => $commande->getId()]);
+        }
+
+		return $this->render('commande/commande.panier.html.twig', [
+			'commandeForm' => $form->createView(),
+			'panier' => $panier,
+		]);
     }
 }

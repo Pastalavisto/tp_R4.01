@@ -45,6 +45,9 @@ class Panier
 	public function setCompte(Compte $compte): static
 	{
 		$this->compte = $compte;
+		if ($compte->getPanier() !== $this) {
+			$compte->setPanier($this);
+		}
 
 		return $this;
 	}
@@ -126,6 +129,12 @@ class Panier
 		if ($existe) {
 			$this->getLignesPanier()->offsetUnset($key);
 		}
+	}
+
+	public function vider(): void
+	{
+		$this->lignesPanier = new ArrayCollection();
+		$this->recalculer() ;
 	}
 }
 

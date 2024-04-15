@@ -3,7 +3,18 @@
 {% block stylesheets %}
     <link rel="stylesheet" id="jplayer-css" href="/js/jplayer-2.9.2/skin/blue.monday/css/jplayer.blue.monday.css" type="text/css"/>
 {% endblock %}
-
+{% block navigation %}
+	<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+		<span>Menu</span>
+	</button>
+	<div class="menu">
+		<ul class="nav-menu">
+			<li class="page_item page-item-1 current_page_item focus">
+				<a href="/afficheRecherche">Rechercher un article</a>
+			</li>
+		</ul>
+	</div>
+{% endblock %}
 {% block body %}
     <header id="header" class="col-full">
         <div id="logo">

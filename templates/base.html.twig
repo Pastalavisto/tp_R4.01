@@ -51,7 +51,7 @@
 						<a class="site-title" href="/">Site web marchand</a>
 						<div class="navbar-buttons">
 							{% if is_granted('ROLE_ADMIN') %}
-								<a href="/compte">Page Admin</a>
+								<a href="/admin">Page Admin</a>
 							{% endif %}
 							<a href="/accederAuPanier">Panier</a>
 							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -59,20 +59,15 @@
 							{% else %}
 								<a href="/connexion">Connexion</a>
 							{% endif %}
+							{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+								<a href="/deconnexion">Déconnexion</a>
+							{% endif %}
 						</div>
 
 					</div>
+
 					<nav id="site-navigation" class="main-navigation" role="navigation">
-						<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
-							<span>Menu</span>
-						</button>
-						<div class="menu">
-							<ul class="nav-menu">
-								<li class="page_item page-item-1 current_page_item focus">
-									<a href="/afficheRecherche">Rechercher un article</a>
-								</li>
-							</ul>
-						</div>
+						{% block navigation %}{% endblock %}
 					</nav>
 				</header>
 

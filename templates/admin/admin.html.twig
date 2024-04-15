@@ -1,17 +1,21 @@
 {% extends 'admin/base.admin.html.twig' %}
 {% block body %}
-    <div class="container col-full">
-        <table class="table_admin">
-            <tr>
-                <th>Page</th>
-                <th>Informations</th>
-            </tr>
-            {% for page in pages %}
-                <tr>
-                    <td><a href={{ path(page.url) }}>{{ page.name }}</a></td>
-                    <td>{{ page.informations is not null ? page.informations : "" }}</td>
-                </tr>
-            {% endfor %}
-        </table
-    </div>
+	<div class="container col-full">
+		<div class="table">
+			<table>
+				<tr>
+					<th>Page</th>
+					<th>Informations</th>
+				</tr>
+				{% for page in pages %}
+					<tr>
+						<td>
+							<a href={{ path(page.url) }}>{{ page.name }}</a>
+						</td>
+						<td>{{ page.informations is not null ? page.informations : "" }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
 {% endblock %}

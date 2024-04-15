@@ -13,6 +13,7 @@ use App\Entity\Catalogue\Livre;
 use App\Entity\Catalogue\Musique;
 use App\Entity\Catalogue\Piste;
 use App\Entity\Compte;
+use App\Entity\Panier\Panier;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -154,6 +155,7 @@ class AppFixtures extends Fixture
 			$compte->setPassword($this->hasher->hashPassword($compte, "admin"));
 			$compte->setNom("admin");
 			$compte->setPrenom("admin");
+			$compte->setPanier(new Panier());
 			$manager->persist($compte);
 			$manager->flush();
 		}

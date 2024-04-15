@@ -2219,7 +2219,7 @@ button.menu-toggle:after {
   padding: 0;
 }
 
-.table_admin > table {
+.table > table {
   border-collapse: collapse;
   border-spacing: 0;
   font-size: 14px;
@@ -2227,28 +2227,28 @@ button.menu-toggle:after {
   border: solid #000 1px;
 }
 
-.table_admin th,
-.table_admin td {
+.table th,
+.table td {
   padding: 8px 10px;
   text-align: center;
-  border-bottom: 1px solid #000;
+  border: 1px solid #000;
   overflow-wrap: break-word;
   min-width: 20vw;
 }
 
-.table_admin th {
+.table th {
   background-color: #f2f2f2;
 }
 
-.table_admin tr:nth-child(even) {
+.table tr:nth-child(even) {
   background-color: #f2f2f2;
 }
 
-.table_admin tr:hover {
+.table tr:hover {
   background-color: #ddd;
 }
 
-.table_admin {
+.table {
   display: flex;
   flex-direction: column;
   width: fit-content;

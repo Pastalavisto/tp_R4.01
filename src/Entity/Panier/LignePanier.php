@@ -2,9 +2,11 @@
 
 namespace App\Entity\Panier;
 
+use App\Entity\Commande;
 use App\Entity\Catalogue\Article;
 use App\Entity\Panier\Panier;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity]
 class LignePanier
@@ -26,6 +28,9 @@ class LignePanier
 
     #[ORM\Column(type: "integer")]
     private int $quantite = 1;
+
+    #[ORM\ManyToMany(targetEntity: Commande::class, mappedBy: 'lignesPanier')]
+    private Collection $commandes;
 
     public function __construct()
     {
@@ -109,6 +114,33 @@ class LignePanier
     public function recalculer()
     {
         $this->prixTotal = $this->getQuantite() * $this->getPrixUnitaire();
+    }
+
+    /**
+     * @return Collection<int, Commande>
+     */
+    public function getCommandes(): Collection
+    {
+        return $this->commandes;
+    }
+
+    public function addCommande(Commande $commande): static
+    {
+        if (!$this->commandes->contains($commande)) {
+            $this->commandes->add($commande);
+            $commande->addArticle($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCommande(Commande $commande): static
+    {
+        if ($this->commandes->removeElement($commande)) {
+            $commande->removeArticle($this);
+        }
+
+        return $this;
     }
 }
 

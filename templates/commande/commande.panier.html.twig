@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="col-full">
+		<h1>Commander</h1>
+		{{ form_start(commandeForm) }}
+		{{ form_row(commandeForm.ville) }}
+        {{ form_row(commandeForm.codePostal) }}
+        {{ form_row(commandeForm.pays) }}
+        {{ form_row(commandeForm.adresse) }}
+        <h2>Articles</h2>
+        <table class="table">
+            <tr>
+                <th>Article</th>
+                <th>Quantité</th>
+                <th>Prix unitaire</th>
+                <th>Prix total</th>
+            </tr>
+            {% for lignePanier in panier.getLignesPanier() %}
+                <tr>
+                    <td>{{ lignePanier.getArticle().getTitre() }}</td>
+                    <td>{{ lignePanier.getQuantite() }}</td>
+                    <td>{{ lignePanier.getPrixUnitaire() }} €</td>
+                    <td>{{ lignePanier.prixTotal() }} €</td>
+                </tr>
+            {% endfor %}
+		<button type="submit" class="btn">Commander</button>
+		{{ form_end(commandeForm) }}
+	</div>
+{% endblock %}

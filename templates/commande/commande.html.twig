@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block navigation %}
+	<button class="menu-toggle" aria-controls="site-navigation" aria-expanded="false">
+		<span>Menu</span>
+	</button>
+	<div class="menu">
+		<ul class="nav-menu">
+			<li class="page_item page-item-1 current_page_item focus">
+				<a href="/compte">Informations</a>
+			</li>
+			<li class="page_item page-item-1 current_page_item focus">
+				<a href="/compte/commandes">Commandes</a>
+			</li>
+		</ul>
+	</div>
+{% endblock %}
+{% block body %}
+	<div class="container col-full">
+		<h1>Commande</h1>
+		<h3>Informations</h3>
+		<p>Numéro de commande :
+			{{ commande.getId() }}</p>
+		<p>Date de commande :
+			{{ commande.getDate()|date('Y-m-d') }}</p>
+		<p>Adresse :{{ commande.getAdresse() }},
+			{{ commande.getVille() }},
+			{{ commande.getCodePostal() }},
+			{{ commande.getPays() }}</p>
+		<p>Montant total :
+			{{ commande.getTotal() }}
+			€</p>
+		<div class="table">
+			<table>
+				<tr>
+					<th>Article</th>
+					<th>Quantité</th>
+					<th>Prix unitaire</th>
+					<th>Prix total</th>
+				</tr>
+				{% for lignePanier in commande.getLignesPanier() %}
+					<tr>
+						<td>{{ lignePanier.getArticle().getTitre() }}</td>
+						<td>{{ lignePanier.getQuantite() }}</td>
+						<td>{{ lignePanier.getPrixUnitaire() }}
+							€</td>
+						<td>{{ lignePanier.getPrixTotal() }}
+							€</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+{% endblock %}
