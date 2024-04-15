@@ -17,7 +17,7 @@ class LignePanier
     private ?int $id = null;
 
     #[ORM\ManyToOne(targetEntity: Panier::class, inversedBy: "lignesPanier")]
-    private Panier $panier;
+    private ?Panier $panier;
 
     #[ORM\ManyToOne(targetEntity: Article::class)]
     private Article $article;
@@ -56,6 +56,11 @@ class LignePanier
     public function getPanier(): Panier
     {
         return $this->panier;
+    }
+
+    public function removePanier()
+    {
+        $this->panier = null;
     }
 
     public function setArticle(Article $article): LignePanier

@@ -134,7 +134,7 @@ class PanierController extends AbstractController
 			$this->entityManager->persist($commande);
 			$this->entityManager->flush();
             
-
+			$this->addFlash('success', 'Votre commande a été enregistrée.');
             return $this->redirectToRoute('commande', ['id' => $commande->getId()]);
         }
 

@@ -133,6 +133,9 @@ class Panier
 
 	public function vider(): void
 	{
+		foreach ($this->getLignesPanier() as $ligne) {
+			$ligne->removePanier();
+		}
 		$this->lignesPanier = new ArrayCollection();
 		$this->recalculer() ;
 	}
