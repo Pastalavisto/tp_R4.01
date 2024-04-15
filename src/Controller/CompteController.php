@@ -43,4 +43,17 @@ class CompteController extends AbstractController
 			'compte' => $compte,
 		]);
 	}
+
+	#[Route('/compte/commandes', name: 'commandes')]
+	public function commandes(Request $request, LoggerInterface $logger): Response
+	{
+		$this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+		
+		$compte = $this->getUser();
+		$commandes = $compte->getCommandes();
+
+		return $this->render('compte/compte.commandes.html.twig', [
+			'commandes' => $commandes,
+		]);
+	}
 }

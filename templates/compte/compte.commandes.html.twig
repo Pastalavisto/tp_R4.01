@@ -1,0 +1,22 @@
+{% extends 'compte/base.compte.html.twig' %}
+{% block body %}
+	<div id="content" class="col-full">
+        <h2>Vos commandes</h2>
+        <div class="table">
+            <table>
+                <tr>
+                    <th>Numéro de commande</th>
+                    <th>Date de commande</th>
+                    <th>Montant total</th>
+                </tr>
+                {% for commande in commandes %}
+                    <tr onclick="window.location.href = '/commande/{{ commande.getId() }}'">
+                        <td>{{ commande.getId() }}</td>
+                        <td>{{ commande.getDate()|date('Y-m-d') }}</td>
+                        <td>{{ commande.getTotal() }} €</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+	</div>
+{% endblock %}
