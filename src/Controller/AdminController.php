@@ -25,6 +25,7 @@ use App\Entity\Catalogue\Musique;
 use App\Entity\Catalogue\Piste;
 use App\Entity\Panier\Panier;
 use App\Entity\Compte;
+use App\Entity\Commande;
 
 class AdminController extends AbstractController
 {
@@ -314,7 +315,7 @@ class AdminController extends AbstractController
 	#[Route('/admin/database', name: 'adminDatabase')]
 	public function adminDatabase(Request $request): Response
 	{
-		$tables = [Instrument::class, Livre::class, Musique::class, Piste::class, Panier::class, Compte::class];
+		$tables = [Instrument::class, Livre::class, Musique::class, Piste::class, Panier::class, Compte::class, Commande::class];
 		$entities = [];
 		$i = 0;
 		foreach ($tables as $table) {

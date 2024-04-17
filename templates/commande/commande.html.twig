@@ -16,7 +16,11 @@
 {% endblock %}
 {% block body %}
 	<div class="container col-full">
-		<h1>Commande</h1>
+		{% if bought %}
+			<h1>Commande effectuée</h1>
+			<h3>Date de livraison estimée : {{ commande.getDateLivraison()|date('Y-m-d') }}</h3>
+		{% endif %}
+		<h2>Commande</h2>
 		<h3>Informations</h3>
 		<p>Numéro de commande :
 			{{ commande.getId() }}</p>
