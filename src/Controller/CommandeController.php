@@ -29,6 +29,7 @@ class CommandeController extends AbstractController
     public function compte(Request $request, LoggerInterface $logger): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        $bought = $request->get('bought');
         $id = $request->get('id');
         $compte = $this->getUser();
         $commande = $this->entityManager->getRepository(Commande::class)->find($id);
@@ -36,6 +37,7 @@ class CommandeController extends AbstractController
             if ($compte->getRoles() == ['ROLE_ADMIN']) {
                 return $this->render('commande/commande.html.twig', [
                     'commande' => $commande,
+                    'bought' => $bought,
                 ]);
             } else {
                 return $this->redirectToRoute('compte');
@@ -44,6 +46,7 @@ class CommandeController extends AbstractController
 
         return $this->render('commande/commande.html.twig', [
             'commande' => $commande,
+            'bought' => $bought,
         ]);
     }
 }

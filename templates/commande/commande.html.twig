@@ -16,9 +16,8 @@
 {% endblock %}
 {% block body %}
 	<div class="container col-full">
-		{% if bought %}
-			<h1>Commande effectuée</h1>
-			<h3>Date de livraison estimée : {{ commande.getDateLivraison()|date('Y-m-d') }}</h3>
+		{% if bought|default(false) %}
+			<h1>Merci d'avoir acheté chez nous !</h1>
 		{% endif %}
 		<h2>Commande</h2>
 		<h3>Informations</h3>
@@ -26,6 +25,8 @@
 			{{ commande.getId() }}</p>
 		<p>Date de commande :
 			{{ commande.getDate()|date('Y-m-d') }}</p>
+		<p>Date de livraison : 
+			{{ commande.getDateLivraison()|date('Y-m-d') }}</p>
 		<p>Adresse :{{ commande.getAdresse() }},
 			{{ commande.getVille() }},
 			{{ commande.getCodePostal() }},
@@ -42,7 +43,7 @@
 					<th>Prix total</th>
 				</tr>
 				{% for lignePanier in commande.getLignesPanier() %}
-					<tr onclick="window.location.href = '/produit/{{ lignePanier.getArticle().getId() }}'">
+					<tr class="clickable" onclick="window.location.href = '/produit/{{ lignePanier.getArticle().getId() }}'">
 						<td>{{ lignePanier.getArticle().getTitre() }}</td>
 						<td>{{ lignePanier.getQuantite() }}</td>
 						<td>{{ lignePanier.getPrixUnitaire() }}

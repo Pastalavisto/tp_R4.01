@@ -74,6 +74,12 @@
 				<p>Marque: inconnu</p>
 			{% endif %}
 		{% endif %}
-        <a href="/ajouterLigne?id={{ article.id }}" class="button product_type_simple add_to_cart_button">Mettre dans le panier</a>
+		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+			{{ form_start(form) }}
+			{{ form_label(form.quantite, "Quantité") }}
+			{{ form_widget(form.quantite) }}
+			{{ form_widget(form.ajouter) }}
+			{{ form_end(form) }}
+		{% endif %}
 	</div>
 {% endblock %}

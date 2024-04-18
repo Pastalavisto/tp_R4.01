@@ -85,13 +85,13 @@ class Panier
 		}
 	}
 	
-	public function ajouterLigne(Article $article): void
+	public function ajouterLigne(Article $article, $qte = 1): void
 	{
 		$lp = $this->chercherLignePanier($article) ;
 		if ($lp == null) {
 			$lp = new LignePanier() ;
 			$lp->setArticle($article) ; 
-			$lp->setQuantite(1) ;
+			$lp->setQuantite($qte) ;
 			$lp->setPanier($this) ;
 			$this->lignesPanier->add($lp) ;
 		}

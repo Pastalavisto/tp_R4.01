@@ -2255,3 +2255,7 @@ button.menu-toggle:after {
   height: auto;
   margin: 0.5em 0.5em 0.5em 0;
 }
+
+.clickable {
+  cursor: pointer;
+}

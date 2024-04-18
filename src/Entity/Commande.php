@@ -176,7 +176,7 @@ class Commande
 
     public function setDateLivraison(\DateTimeInterface $dateLivraison): static
     {
-        $this->date = $dateLivraison;
+        $this->dateLivraison = $dateLivraison;
 
         return $this;
     }

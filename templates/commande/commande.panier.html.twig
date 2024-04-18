@@ -14,7 +14,7 @@
 		</div>
 		<div>
 			<label class="required" for="cardNumber">Numéro de carte :</label>
-			<input name="cardNumber" type="numeric" maxlength="16" placeholder="xxxxxxxxxxxxxxxx" required>
+			<input name="cardNumber" type="numeric" minlength="16" maxlength="16" placeholder="xxxxxxxxxxxxxxxx" required>
 		</div>
 		<div>
 			<label class="required" for="date">Date d'expiration :</label>
@@ -22,7 +22,7 @@
 		</div>
 		<div>
 			<label class="required" for="cvv">CVV :</label>
-			<input type="numeric" name="cvv" maxlength="3" required>
+			<input type="numeric" name="cvv" minlength="3" maxlength="3" required>
 		</div>
 		<h3>Récapitulatif de la commande :
 		</h3>
