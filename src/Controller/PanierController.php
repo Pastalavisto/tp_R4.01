@@ -130,12 +130,13 @@ class PanierController extends AbstractController
 			$commande->setCodePostal($form->get('codePostal')->getData());
 			$commande->setTotal($panier->getTotal());
 			$commande->setDate(new \DateTime());
+			$commande->setDateLivraison(new \DateTime('+1 week'));
 			$panier->vider();
 			$this->entityManager->persist($commande);
 			$this->entityManager->flush();
             
 			$this->addFlash('success', 'Votre commande a été enregistrée.');
-            return $this->redirectToRoute('commande', ['id' => $commande->getId()]);
+            return $this->redirectToRoute('commande', ['id' => $commande->getId(), 'bought' => true]);
         }
 
 		return $this->render('commande/commande.panier.html.twig', [

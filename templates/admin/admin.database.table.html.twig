@@ -17,7 +17,11 @@
 					{% for data in entities.data %}
 						<tr>
 							{% for field in entities.fields %}
-								<td>{{ data[field] }}</td>
+								{% if data[field].timestamp is defined %}
+									<td>{{ data[field]|date('d/m/Y') }}</td>
+								{% else %}
+									<td>{{ data[field] }}</td>
+								{% endif %}
 							{% endfor %}
 						</tr>
 					{% endfor %}

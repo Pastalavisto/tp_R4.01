@@ -41,6 +41,9 @@ class Commande
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $dateLivraison = null;
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();
@@ -162,6 +165,18 @@ class Commande
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getDateLivraison(): ?\DateTimeInterface
+    {
+        return $this->dateLivraison;
+    }
+
+    public function setDateLivraison(\DateTimeInterface $dateLivraison): static
+    {
+        $this->dateLivraison = $dateLivraison;
 
         return $this;
     }

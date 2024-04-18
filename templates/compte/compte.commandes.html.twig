@@ -7,12 +7,14 @@
                 <tr>
                     <th>Numéro de commande</th>
                     <th>Date de commande</th>
+                    <th>Date de livraison</th>
                     <th>Montant total</th>
                 </tr>
                 {% for commande in commandes %}
-                    <tr onclick="window.location.href = '/commande/{{ commande.getId() }}'">
+                    <tr class="clickable" onclick="window.location.href = '/commande/{{ commande.getId() }}'">
                         <td>{{ commande.getId() }}</td>
                         <td>{{ commande.getDate()|date('Y-m-d') }}</td>
+                        <td>{{ commande.getDateLivraison()|date('Y-m-d') }}</td>
                         <td>{{ commande.getTotal() }} €</td>
                     </tr>
                 {% endfor %}
